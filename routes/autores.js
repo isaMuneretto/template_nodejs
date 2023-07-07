@@ -59,6 +59,7 @@ router.post("/", async (req, res) => {
     //faz a desestruturação dos dados recebidos no corpo da requisição
     
     const { nome, sobrenome, idade, data_nascimento, sexo, telefone } = req.body;
+    console.log(nome, sobrenome, idade, data_nascimento, sexo, telefone)
 
     //se algum dos campos não foi passado, irá enviar uma mensagem de erro ao retornar
     if (!nome || !sobrenome || !idade || !data_nascimento || !sexo || !telefone) {

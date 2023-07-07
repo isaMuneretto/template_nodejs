@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 router.get("/filtro/:palavra", async(req,res)=> {
     const palavra = req.params.palavra; // palavra ou titulo a pesquisar
     try{
-            const livros = await dbKnex("editoras")
+            const editoras = await dbKnex("editoras")
             .orWhere("nome","like",`%${palavra}%`);
             res.status(200).json(editoras); //retorna statusCode ok e os dados
         }catch(error){
@@ -59,6 +59,7 @@ router.post("/", async (req, res) => {
     //faz a desestruturação dos dados recebidos no corpo da requisição
 
     const { nome, cidade, estado, telefone, rua, cep } = req.body;
+    console.log(nome, cidade, estado, telefone, rua, cep)
 
     //se algum dos campos não foi passado, irá enviar uma mensagem de erro ao retornar
     if (!nome || !cidade || !estado || !telefone || !rua || !cep) {
