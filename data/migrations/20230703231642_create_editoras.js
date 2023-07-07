@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
+exports.up = function(knex) {
     return knex.schema.createTable('editoras', (table) => {
         table.increments();
         table.string("nome", 80).notNullable();
@@ -14,6 +14,10 @@ exports.up = function (knex) {
     })
 };
 
-exports.down = function (knex) {
-    return knex.schema.dropTable("editoras");
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.down = function(knex) {
+  
 };

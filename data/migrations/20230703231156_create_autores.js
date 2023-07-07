@@ -8,15 +8,16 @@ exports.up = function (knex) {
         table.string("nome", 80).notNullable();
         table.string("sobrenome", 60).notNullable();
         table.integer("idade", 2).notNullable();
-        table.string("data_nascimento", 12).notNullable();
+        table.decimal("data_nascimento", 10).notNullable();
         table.string("sexo", 2).notNullable();
         table.string("telefone", 15).notNullable();
     })
 };
 
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
 exports.down = function (knex) {
-    return knex.schema.dropTable("autores");
+
 };
-
-
-

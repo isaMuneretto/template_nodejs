@@ -18,6 +18,42 @@ router.get("/", async (req, res) => {
     }
 });
 
+//Filtro por titulo ou por autor
+router.get("/filtro/:palavra", async(req,res)=> {
+    const palavra = req.params.palavra; // palavra ou titulo a pesquisar
+    try{
+            const livros = await dbKnex("editoras")
+            .orWhere("nome","like",`%${palavra}%`);
+            res.status(200).json(editoras); //retorna statusCode ok e os dados
+        }catch(error){
+            res.status(400).json({msg:error.message}); //retorna status de erro e msg
+        }
+});
+
+router.get("/dados/resumo",async (req,res) =>{
+    try{
+        const editoras = await dbKnex("editoras")
+        .count({num: "id"})
+        .sum({soma: "estado"});
+        const {num,soma} = editoras[0];
+        res.status(200).json({num,soma:Number(soma.toFixed(2))});
+    }catch(error){
+        res.status(400).json({msg:error.message}); //retorna status de erro e msg
+    }
+})
+
+//Exibir o gráfico com a soma dos preços agrupados por ano
+router.get("/dados/grafico",async (req,res) =>{
+    try{
+        //obtém ano e soma do preço dos livros, Agrupados por ano
+        const dadosGrafico = await dbKnex("editoras").select("estado")
+        .count({quantidade:"id"}).groupBy("estado");
+        res.status(200).json(dadosGrafico);
+    }catch(error){
+        res.status(400).json({msg:error.message}); //retorna status de erro e msg
+    }
+})
+
 //método post é usado para inclusão
 router.post("/", async (req, res) => {
     //faz a desestruturação dos dados recebidos no corpo da requisição
@@ -42,10 +78,10 @@ router.post("/", async (req, res) => {
 //método put é usado para alteração. id indica o registro a ser alterado
 router.put("/:id", async (req, res) => {
     const id = req.params.id; //
-    const { rua } = req.body; //campo a ser alterado
+    const { telefone } = req.body; //campo a ser alterado
     try {
         //altera o campo rua, no registro cujo id coincidir com o parametro passado
-        await dbKnex("editoras").update({ rua }).where({ id });
+        await dbKnex("editoras").update({ telefone }).where({ id });
         res.status(200).json(); //statusCode indica ok
     } catch (error) {
         res.status(400).json({ msg: error.message }); //retorna status de erro e msg
